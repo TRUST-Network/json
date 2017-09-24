@@ -30,12 +30,26 @@ public class main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public  static void main(String[] args) {
         // TODO code application logic here
         String result = GET(sURL);
-        System.out.println(result);
+        main Main = new main();
+        Main.onPostExecute(result);
+        Test test = new Test();
+        test.maine(result);
     }
-        public static String GET(String url){
+    public void onPostExecute(String result) {
+
+           /* StringBuilder text = parse(result,"Legend","Description");
+            text.append(parse(result,"Legend","Color"));
+            text.append(parse(result,"States","Name"));
+            text.append(parse(result,"States","Regions"));
+            System.out.println(text);
+            */
+            //return true;
+    }
+    
+    public static String GET(String url){
         InputStream inputStream = null;
         String result = "";
         try {
@@ -116,4 +130,7 @@ public class main {
             }
         return sb;
         }
+    
+    // TEST
+    
 }
