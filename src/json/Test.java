@@ -18,15 +18,15 @@ import org.json.JSONObject;
  * @author Tom
  */
 public class Test {
+        public static boolean hloubka = false;
+        
         public static void maine(String data) 
     {
         // oznameni
         System.out.println(":test class TEST");
         // hierarchical data in a flattened list
        // String data = "";
-
-        TreeManager treeManager = new TreeManager();
-         List<String> path = new ArrayList<>();
+       
          
          JSONObject object = new JSONObject(data);
             String[] keys = JSONObject.getNames(object);
@@ -36,18 +36,18 @@ public class Test {
            Object value = object.get(key);
            if ( value instanceof JSONArray ) {
                 // It's an array
-                System.out.println("array");
+             //   System.out.println(key + " / root path array");
                 JSONArray p;
                p = object.getJSONArray(key);
-                String text = cyklus (p);
+                String text = cyklusA (p, key);
                 //interventionJsonArray = (JSONArray)intervention;
             } 
            if ( value instanceof JSONObject ) {
-                // It's an array
-                System.out.println("object");
+                // na zacatku nejcasteji neni object
+              //  System.out.println(value + " / root path object");
                 JSONObject o;
                o = object.getJSONObject(key);
-                String text = cyklusO (o);
+                String text = cyklusO (o,"");
                 //interventionJsonArray = (JSONArray)intervention;
             } 
         /*     Iterator iterator = object.keys();
@@ -62,17 +62,7 @@ public class Test {
            //System.out.println(object.length());
         }
          
-        for (int i=0; i<data.length(); i++) 
-        {
-            // build the path to our items in the tree
  
-                // add this item to our path
-                path.add("test");
-               // System.out.println(data[1]);
-                // will add it unless an Item with this name already exists at this path
-               // treeManager.addData(treeManager, path);
-            
-        }
 
        // treeManager.getData(data[0]).putValue("MPG", 38);
        // treeManager.getData(data[1]).putValue("MPG", 28);
@@ -83,7 +73,7 @@ public class Test {
        
        //System.out.println(treeManager);
     }
-        public static String cyklus ( JSONArray data) {
+        public static String cyklusA ( JSONArray data, String parent ) {
             
          //JSONArray object = new JSONArray(data);
 
@@ -91,34 +81,47 @@ public class Test {
         {
            Object value = data.get(i);
 
-            System.out.println(i + " - " + value );
+            //System.out.println( parent );
         if ( value instanceof JSONObject ) {
             // It's an array
-            System.out.println("object");
+          //  System.out.println(value); vypise
             JSONObject o;
             o = data.getJSONObject(i);
-            String text = cyklusO (o);
+            String text = cyklusO (o, parent);
+            // System.out.println(text);
  //interventionJsonArray = (JSONArray)intervention;
             } 
+
            //System.out.println(object.length());
         }
         return "";
        }
 
-    private static String cyklusO(JSONObject o) {
+    private static String cyklusO(JSONObject o, String parent) {
          String[] keys = JSONObject.getNames(o);
         for (String key : keys)
         {
            Object value = o.get(key);
-
-            System.out.println(key + " - " + value );
+           
+           
             if ( value instanceof JSONArray ) {
                 // It's an array
-                System.out.println("array");
-                JSONArray p;
-                p = o.getJSONArray(key);
-                String text = cyklus (p);
+                 //System.out.println(key + " - "  );
+                 if ( key.equals("Regions")) {
+                     System.out.println(key );
+                    JSONArray p;
+                    hloubka = true;
+                    p = o.getJSONArray(key);
+                    String text = cyklusA (p, key);
+                   
+                 }
             } 
+            if ( parent.equals("Regions") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
+                System.out.println(key + " - " + value + " / child path, " + hloubka);
+                databaze d = new databaze();
+                d.pridejRegion(key,"test");
+                //return (key + " - " + value + " / child path, " + hloubka);
+            }
            //System.out.println(object.length());
         }
         return "";
