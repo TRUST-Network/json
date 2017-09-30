@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -35,8 +36,67 @@ public class main {
         String result = GET(sURL);
         main Main = new main();
         Main.onPostExecute(result);
+        
+        Scanner sc = new Scanner(System.in, "Windows-1250");
         Test test = new Test();
-        test.maine(result);
+        
+        databaze d = new databaze();
+        test.setDatabaze(d);
+        test.maine(result,"Stations");
+        String volba = "";
+        String stanice = "";
+        String region = "";
+        // hlavní cyklus
+        while (!volba.equals("4")) {
+                //diar.vypisUvodniObrazovku();
+                System.out.println();
+                System.out.println("Vyberte si akci:");
+                System.out.println("1 - vypis vsechny regiony");
+                System.out.println("2 - vypis vsechnyStanice");
+                System.out.println("22 - vypis Stanice dle regionu");
+                System.out.println("3 - zadej stanici");
+                System.out.println("4 - zadej region");
+                System.out.println("5 - Konec");
+                volba = sc.nextLine();
+                System.out.println();
+                // reakce na volbu
+                switch (volba) {
+                        case "1":
+                                d.vypisRegiony();
+                                break;
+                        case "2":
+                                d.vypisStanice();
+                                break;
+                        case "22":
+                                System.out.println("napis kod regionu:");
+                                stanice = sc.nextLine();
+                                System.out.println();
+                                d.vypisStanice(stanice);
+                                break;        
+                        case "3":
+                                System.out.println("napis kod stanice:");
+                                stanice = sc.nextLine();
+                                System.out.println();
+                                d.vypisStanici(stanice);  
+                                break;
+                        case "4":
+                                System.out.println("napis kod regionu:");
+                                region = sc.nextLine();
+                                System.out.println();
+                                d.vypisRegion(region);  
+                                break;        
+                        case "5":
+                                System.out.println("Libovolnou klávesou ukončíte program...");
+                                break;
+                        default:
+                                System.out.println("Neplatná volba, stiskněte libovolnou klávesu a opakujte volbu.");
+                                break;
+                }
+        }
+
+       // test.maine(result,"Regions");
+        
+       // ArrayList<Region> regiony = d.vypisRegiony();
     }
     public void onPostExecute(String result) {
 
