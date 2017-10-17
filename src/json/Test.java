@@ -45,15 +45,15 @@ public class Test {
            Object value = object.get(key);
            if ( value instanceof JSONArray ) {
                 // It's an array
-             //   System.out.println(key + " / root path array");
+                System.out.println(key + " / root path array");
                 JSONArray p;
                p = object.getJSONArray(key);
-                String text = cyklusA (p, key);
+                String text = cyklusA (p, key + "-root");
                 //interventionJsonArray = (JSONArray)intervention;
             } 
            if ( value instanceof JSONObject ) {
                 // na zacatku nejcasteji neni object
-              //  System.out.println(value + " / root path object");
+              // System.out.println(value + " / root path object");
                 JSONObject o;
                o = object.getJSONObject(key);
                 String text = cyklusO (o,"");
@@ -121,8 +121,14 @@ public class Test {
          if ( parent.equals("Components")) {   
             Object codeC = o.get("Code");
             c = d.pridejComponent(codeC.toString(), station.toString() );
-            
+                           
+               
          }
+         if ( parent.equals("Components-root")) {                              
+            // komponenty pro prevod jednotek
+            System.out.println(o.get("Name")+ " komponent ");
+               
+         }         
          
         for (String key : keys)
         {
@@ -143,9 +149,10 @@ public class Test {
                if (key.equals("Val")){ c.setVal(value.toString());}
                if (key.equals("Int")){ c.setInt(value.toString());}
                if (key.equals("Ix")){ c.setIx(value.toString());}
+
             }             
-            if ( parent.equals("skupina") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
-               // System.out.println(key + " - " + value + " / child path, ");
+            if (parent.equals("Legend-root") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
+              // System.out.println(key + " - " + value + " / child path, ");
 
                 //return (key + " - " + value + " / child path, " + hloubka);
             }

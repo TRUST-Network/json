@@ -7,6 +7,7 @@ package json;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,26 +69,31 @@ public class databaze {
         return nalezene;
     }     
     // vypise komponenty stanice
-    public void vypisStanici( String code) {
-        Map<String, String> nalezene = new HashMap<>();
+    public HashMap<String,Map> vypisStanici( String code) {
+        //ArrayList<Station> nalezene = new ArrayList<>();
+       HashMap<String,Map> nalezene = new HashMap<>();
         for (Station z : stanice) {
             if (z.getCode().equals(code)) {                
                 System.out.println(z.toString());
-                Map<String, String> words = new HashMap<>();
+                
                 for (Component c : component ){
-                    
+                Map<String, String> words = new HashMap<>();    
                    if (c.getStanice().equals(z.getCode())) {                
                         System.out.println(c.toString()); 
                         words.put("code", c.getCode());
                         words.put("val",c.getVal ());
+                        words.put("interval",c.getInt ());
+                        words.put("index",c.getIx ());
+                        nalezene.put(c.getCode(),words);
                     }
                 }
-                    System.out.println(words.get("code") + " " + words.get("val")); 
+                    
                    //nalezene.add(z); 
             }
                 
         }
-        //return nalezene;
+        System.out.println(nalezene.get("O3").get("val") + " " + nalezene.get("SO2").get("val")); 
+        return nalezene;
     }  
     public ArrayList<Region>  vypisRegion( String code) {
         ArrayList<Region> nalezene = new ArrayList<>();
