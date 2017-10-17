@@ -19,11 +19,20 @@ import org.json.JSONObject;
  */
 public class Test {
         public static boolean hloubka = false;
+        private String skupina;
+        private Object region = "";
+        private Object station = "";
+        public static databaze d;
         
-        public static void maine(String data) 
+        public void setDatabaze (databaze d) {
+            this.d = d;
+        }
+        
+    public void maine(String data, String skupina) 
     {
+        this.skupina = skupina;
         // oznameni
-        System.out.println(":test class TEST");
+        System.out.println(":test class TEST skupina: "+ skupina );
         // hierarchical data in a flattened list
        // String data = "";
        
@@ -50,17 +59,11 @@ public class Test {
                 String text = cyklusO (o,"");
                 //interventionJsonArray = (JSONArray)intervention;
             } 
-        /*     Iterator iterator = object.keys();
-           while(iterator.hasNext()){
-            String keyi = (String)iterator.next();
-            JSONObject page = object.getJSONObject(keyi);
 
-        //do stuff with the page...
-            } */
-            // Determine type of value and do something with it...
-           // System.out.println(key + " - " + value );
-           //System.out.println(object.length());
         }
+       // ArrayList<Region> regiony = d.vypisRegiony();
+       // ArrayList<Station> stanice = d.vypisStanice();
+       
          
  
 
@@ -73,7 +76,10 @@ public class Test {
        
        //System.out.println(treeManager);
     }
-        public static String cyklusA ( JSONArray data, String parent ) {
+        /*
+        @parent - nazev pole
+        */
+        public  String cyklusA ( JSONArray data, String parent ) {
             
          //JSONArray object = new JSONArray(data);
 
@@ -97,33 +103,58 @@ public class Test {
         return "";
        }
 
-    private static String cyklusO(JSONObject o, String parent) {
-         String[] keys = JSONObject.getNames(o);
+    private String cyklusO(JSONObject o, String parent) {
+        String[] keys = JSONObject.getNames(o);
+        Component c = null;
+        if ( parent.equals("Regions")) {
+           // System.out.println(o.get("Code")+ " - " +o.get("Name") );
+                
+                d.pridejRegion(o.get("Code").toString(),o.get("Name").toString());
+                this.region = o.get("Code");
+        }
+        if ( parent.equals("Stations")) {
+           // System.out.println(o.get("Code")+ " - " +o.get("Name") + " - " + o.get("Classif") );
+                 
+                d.pridejStation(o.get("Code").toString(),o.get("Name").toString(),o.get("Classif").toString(),o.get("Ix").toString(),region.toString());
+                this.station = o.get("Code");
+        }        
+         if ( parent.equals("Components")) {   
+            Object codeC = o.get("Code");
+            c = d.pridejComponent(codeC.toString(), station.toString() );
+            
+         }
+         
         for (String key : keys)
         {
            Object value = o.get(key);
-           
-           
-            if ( value instanceof JSONArray ) {
+           if ( value instanceof JSONArray ) {
                 // It's an array
-                 //System.out.println(key + " - "  );
-                 if ( key.equals("Regions")) {
-                     System.out.println(key );
+                // System.out.println(key + " - "  );
+               //  if ( key.equals(skupina)) {
+                    // System.out.println(key );
                     JSONArray p;
-                    hloubka = true;
                     p = o.getJSONArray(key);
                     String text = cyklusA (p, key);
                    
-                 }
+              //   }
             } 
-            if ( parent.equals("Regions") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
-                System.out.println(key + " - " + value + " / child path, " + hloubka);
-                databaze d = new databaze();
-                d.pridejRegion(key,"test");
+            if ( parent.equals("Components")) {   
+                Object codeC = o.get("Code");
+               if (key.equals("Val")){ c.setVal(value.toString());}
+               if (key.equals("Int")){ c.setInt(value.toString());}
+               if (key.equals("Ix")){ c.setIx(value.toString());}
+            }             
+            if ( parent.equals("skupina") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
+               // System.out.println(key + " - " + value + " / child path, ");
+
                 //return (key + " - " + value + " / child path, " + hloubka);
             }
            //System.out.println(object.length());
         }
+        
+        if ( parent.equals("Components")) { 
+            d.ulozComponent(c);       
+         }
         return "";
          
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
