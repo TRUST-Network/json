@@ -124,11 +124,17 @@ public class Test {
                            
                
          }
+         // komponenty jednotek
          if ( parent.equals("Components-root")) {                              
             // komponenty pro prevod jednotek
-            System.out.println(o.get("Name")+ " komponent ");
-               
-         }         
+            //System.out.println(o.get("Name")+ " komponent ");
+            d.pridejComponentUnits (o.get("Code").toString(),o.get("Name").toString(),o.get("Unit").toString()) ;  
+         }       
+         if ( parent.equals("Legend-root")) {                              
+            // komponenty pro prevod jednotek
+            System.out.println(o.get("Description")+ " legend ");
+            d.pridejLegend (o.get("Ix").toString(),o.get("Color").toString(),o.get("ColorText").toString(),o.get("Description").toString()) ;  
+         }                
          
         for (String key : keys)
         {
