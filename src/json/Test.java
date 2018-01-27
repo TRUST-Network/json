@@ -43,6 +43,7 @@ public class Test {
         for (String key : keys)
         {
            Object value = object.get(key);
+            System.out.println(key + " / root key");
            if ( value instanceof JSONArray ) {
                 // It's an array
                 System.out.println(key + " / root path array");
@@ -53,7 +54,7 @@ public class Test {
             } 
            if ( value instanceof JSONObject ) {
                 // na zacatku nejcasteji neni object
-              // System.out.println(value + " / root path object");
+             //  System.out.println(value + " / root path object");
                 JSONObject o;
                o = object.getJSONObject(key);
                 String text = cyklusO (o,"");
@@ -134,7 +135,12 @@ public class Test {
             // komponenty pro prevod jednotek
             System.out.println(o.get("Description")+ " legend ");
             d.pridejLegend (o.get("Ix").toString(),o.get("Color").toString(),o.get("ColorText").toString(),o.get("Description").toString()) ;  
-         }                
+         }    
+         if ( parent.equals("Actualized-root")) {                              
+            // komponenty pro prevod jednotek
+            System.out.println(o.get("Description")+ " legend ");
+            //d.pridejLegend (o.get("Ix").toString(),o.get("Color").toString(),o.get("ColorText").toString(),o.get("Description").toString()) ;  
+         }  
          
         for (String key : keys)
         {

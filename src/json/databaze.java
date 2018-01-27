@@ -89,7 +89,7 @@ public class databaze {
                 for (Component c : component ){
                 Map<String, String> words = new HashMap<>();    
                    if (c.getStanice().equals(z.getCode())) {                
-                        //System.out.println(c.toString()); 
+                        //; System.out.println(c.toString()); 
                         words.put("code", c.getCode());
                         words.put("val",c.getVal ());
                         words.put("interval",c.getInt ());
