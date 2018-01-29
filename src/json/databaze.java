@@ -15,6 +15,7 @@ import java.util.Map;
  * @author Tom
  */
 public class databaze {
+    private ArrayList<Informace> info;
     private ArrayList<Zaznam> zaznamy;
     private ArrayList<Region> regiony;
     private ArrayList<Station> stanice;
@@ -23,12 +24,17 @@ public class databaze {
     private ArrayList<Legend> legend;
     
     public databaze () {
+        info = new ArrayList<>();
         zaznamy = new ArrayList<>();
         regiony = new ArrayList<>();
         stanice = new ArrayList<>();
         component = new ArrayList<>();
         unitA = new ArrayList<>();
         legend = new ArrayList<>();
+
+    }
+    public void pridejInformace (String name) {
+        info.add(new Informace (  name));
     }
     public void pridejZaznam (String code, String name, String unit) {
         zaznamy.add (new Zaznam ( code, name, unit));
@@ -148,5 +154,9 @@ public class databaze {
                 
         }
         return nalezene;
-    } 
+    }    
+    public String vypisInfo( ) {
+
+        return info.toString();
+    }
 }

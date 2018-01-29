@@ -26,6 +26,12 @@ public class Test {
         
         public void setDatabaze (databaze d) {
             this.d = d;
+         
+        }
+        public void clearDatabaze (databaze d) {
+
+           
+ 
         }
         
     public void maine(String data, String skupina) 
@@ -43,7 +49,12 @@ public class Test {
         for (String key : keys)
         {
            Object value = object.get(key);
-            System.out.println(key + " / root key");
+            System.out.println(key + " / root key val");
+            if ( key.equals("Actualized")) {
+              System.out.println(value + " Actualized");  
+              
+               d.pridejInformace(value.toString());
+            }
            if ( value instanceof JSONArray ) {
                 // It's an array
                 System.out.println(key + " / root path array");
@@ -109,7 +120,7 @@ public class Test {
         Component c = null;
         if ( parent.equals("Regions")) {
            // System.out.println(o.get("Code")+ " - " +o.get("Name") );
-                
+           
                 d.pridejRegion(o.get("Code").toString(),o.get("Name").toString());
                 this.region = o.get("Code");
         }

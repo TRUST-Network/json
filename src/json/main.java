@@ -35,7 +35,7 @@ public class main {
         // TODO code application logic here
         String result = GET(sURL);
         main Main = new main();
-        Main.onPostExecute(result);
+        //Main.onPostExecute(result);
         
         Scanner sc = new Scanner(System.in, "Windows-1250");
         Test test = new Test();
@@ -47,7 +47,7 @@ public class main {
         String stanice = "";
         String region = "";
         // hlavní cyklus
-        while (!volba.equals("4")) {
+        while (!volba.equals("5")) {
                 //diar.vypisUvodniObrazovku();
                 System.out.println();
                 System.out.println("Vyberte si akci:");
@@ -56,6 +56,7 @@ public class main {
                 System.out.println("22 - vypis Stanice dle regionu");
                 System.out.println("3 - zadej stanici");
                 System.out.println("4 - zadej region");
+                System.out.println("r - refresh");
                 System.out.println("5 - Konec");
                 volba = sc.nextLine();
                 System.out.println();
@@ -85,9 +86,18 @@ public class main {
                                 System.out.println();
                                 d.vypisRegion(region);  
                                 break;        
+                        case "r":
+                                System.out.println("refresh..");
+                                d = null;
+                                databaze d = new databaze();
+                                test.setDatabaze(d);
+                                result = GET(sURL);
+                                test.maine(result,"Stations");
+                                System.out.println(d.vypisInfo());
+                                break;
                         case "5":
                                 System.out.println("Libovolnou klávesou ukončíte program...");
-                                break;
+                                break;                              
                         default:
                                 System.out.println("Neplatná volba, stiskněte libovolnou klávesu a opakujte volbu.");
                                 break;
