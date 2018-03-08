@@ -24,7 +24,7 @@ public class Test {
         private Object region = "";
         private Object station = "";
         public static databaze d;  
-        int i = 0; // pocitadlo pro Component
+        private int i = 0; // pocitadlo pro Component
         
         public void setDatabaze (databaze d) {
             this.d = d;
