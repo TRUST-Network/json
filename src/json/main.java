@@ -88,8 +88,6 @@ public class main {
                                 break;        
                         case "r":
                                 System.out.println("refresh..");
-                                d = null;
-                                databaze d = new databaze();
                                 test.setDatabaze(d);
                                 result = GET(sURL);
                                 test.maine(result,"Stations");

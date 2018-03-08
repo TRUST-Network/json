@@ -22,7 +22,8 @@ public class Test {
         private String skupina;
         private Object region = "";
         private Object station = "";
-        public static databaze d;
+        public static databaze d;  
+        int i = 0; // pocitadlo pro Component
         
         public void setDatabaze (databaze d) {
             this.d = d;
@@ -65,7 +66,7 @@ public class Test {
             } 
            if ( value instanceof JSONObject ) {
                 // na zacatku nejcasteji neni object
-             //  System.out.println(value + " / root path object");
+              System.out.println(value + " : "+ key + "/ root path object");
                 JSONObject o;
                o = object.getJSONObject(key);
                 String text = cyklusO (o,"");
@@ -95,24 +96,24 @@ public class Test {
             
          //JSONArray object = new JSONArray(data);
 
-        for (int i=0; i<data.length(); i++) 
-        {
-           Object value = data.get(i);
+            for (int i=0; i < data.length(); i++) 
+            {
+               Object value = data.get(i);
 
-            //System.out.println( parent );
-        if ( value instanceof JSONObject ) {
-            // It's an array
-          //  System.out.println(value); vypise
-            JSONObject o;
-            o = data.getJSONObject(i);
-            String text = cyklusO (o, parent);
-            // System.out.println(text);
- //interventionJsonArray = (JSONArray)intervention;
-            } 
+                    //System.out.println( value );
+                if ( value instanceof JSONObject ) {
+                    // It's an array
+                  //  System.out.println(value); vypise
+                    JSONObject o;
+                    o = data.getJSONObject(i);
+                    String text = cyklusO (o, parent);
+                    // System.out.println(text);
+                    //interventionJsonArray = (JSONArray)intervention;
+                } 
 
-           //System.out.println(object.length());
-        }
-        return "";
+               //System.out.println(object.length());
+            }
+            return "";
        }
 
     private String cyklusO(JSONObject o, String parent) {
@@ -131,10 +132,12 @@ public class Test {
                 this.station = o.get("Code");
         }        
          if ( parent.equals("Components")) {   
+
             Object codeC = o.get("Code");
-            c = d.pridejComponent(codeC.toString(), station.toString() );
-                           
-               
+            c = d.pridejComponent(this.i, codeC.toString(), station.toString() );
+           // System.out.println( keys[0].toString() + " - key v Component " + codeC.toString());
+           // System.out.println( this.i + " - key v Component ");
+            this.i++;   // pocitadlo pozice v poli
          }
          // komponenty jednotek
          if ( parent.equals("Components-root")) {                              
@@ -151,28 +154,35 @@ public class Test {
             // komponenty pro prevod jednotek
             System.out.println(o.get("Description")+ " legend ");
             //d.pridejLegend (o.get("Ix").toString(),o.get("Color").toString(),o.get("ColorText").toString(),o.get("Description").toString()) ;  
-         }  
-         
+         }   
+         // rozdeluje pole v Component
         for (String key : keys)
         {
+               
            Object value = o.get(key);
            if ( value instanceof JSONArray ) {
                 // It's an array
-                // System.out.println(key + " - "  );
+                 //System.out.println(key + " - "  );
+                 this.i = 0;
                //  if ( key.equals(skupina)) {
                     // System.out.println(key );
                     JSONArray p;
                     p = o.getJSONArray(key);
                     String text = cyklusA (p, key);
-                   
+                    
               //   }
             } 
+           if ( ! parent.equals("Components")){ 
+               // 
+           }
             if ( parent.equals("Components")) {   
                 Object codeC = o.get("Code");
+                c.setIndex(this.i); // zapise index pole
                if (key.equals("Val")){ c.setVal(value.toString());}
                if (key.equals("Int")){ c.setInt(value.toString());}
                if (key.equals("Ix")){ c.setIx(value.toString());}
-
+               
+              
             }             
             if (parent.equals("Legend-root") && !(value instanceof JSONArray)) { // jiz nema dalsi potomky
               // System.out.println(key + " - " + value + " / child path, ");
@@ -181,9 +191,9 @@ public class Test {
             }
            //System.out.println(object.length());
         }
-        
         if ( parent.equals("Components")) { 
-            d.ulozComponent(c);       
+            d.ulozComponent(c);     
+                         
          }
         return "";
          
